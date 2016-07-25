@@ -13,15 +13,4 @@ Find a compiled version [here](https://gultsch.de/ImageDownloader-0.1.jar)
 
 Usage: ```java -jar ImageDownloader.jar http://host.tld/path/to/file.jpg#theivandkey```
 
-If you change your browser in gajim to something like this script it will automatically open image links in your image viewer if you click on them.
-```
-#!/bin/bash
-URL=$1
-BROWSER=firefox
-JAVA=/usr/lib/jvm/java-8-openjdk/bin/java
-IMAGE_DOWNLOADER=/home/daniel/Projects/ImageDownloader/t
-if [ ${URL: -97:1} == "#" ]; then
-	$JAVA -jar $IMAGE_DOWNLOADER $URL | feh -. -
-else
-   $BROWSER $URL
-```
+If you change your browser in gajim to something like the `openbrowser.sh` script it will automatically open image links in your image viewer if you click on them.
