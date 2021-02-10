@@ -43,12 +43,20 @@ public class Downloader {
     }
 
     private static OutputStream setupOutputStream(OutputStream os, String reference) {
-        if (reference != null && reference.length() == 96) {
+        if (reference != null) {
+            int ivLen;
+            if (reference.length() == 96) {
+                ivLen = 16;
+            } else if (reference.length() == 88) {
+                ivLen = 12;
+            } else {
+                return os;
+            }
             byte[] keyAndIv = hexToBytes(reference);
             byte[] key = new byte[32];
-            byte[] iv = new byte[16];
-            System.arraycopy(keyAndIv, 0, iv, 0, 16);
-            System.arraycopy(keyAndIv, 16, key, 0, 32);
+            byte[] iv = new byte[ivLen];
+            System.arraycopy(keyAndIv, 0, iv, 0, ivLen);
+            System.arraycopy(keyAndIv, ivLen, key, 0, 32);
             AEADBlockCipher cipher = new GCMBlockCipher(new AESEngine());
             cipher.init(false, new AEADParameters(new KeyParameter(key), 128, iv));
             return new CipherOutputStream(os, cipher);
